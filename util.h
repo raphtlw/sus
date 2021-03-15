@@ -279,11 +279,28 @@ Win *get_windows()
                               &x, &y, &junkroot);
 
         /* window id */
-        const char *window_id = sprintf("0x%.8lx", client_list[i]);
+        // const char *window_id = sprintf("0x%.8lx", client_list[i]);
+        char buf[1000] = {0};
+        snprintf(buf, 999, "0x%.8lx", client_list[i]);
+
+        char *window_id = buf;
+
+        printf("Window ID: %s\n", window_id);
 
         /* window is minimized */
-        gchar *window_state = get_property(disp, client_list[i], XA_STRING, "_NET_WM_STATE", NULL);
-        printf("%s", window_state);
+        unsigned long *window_state = (unsigned long *)get_property(disp, client_list[i], XA_ATOM, "_NET_WM_STATE", NULL);
+        printf("Window state: %s\n", window_state);
+
+        Atom state = 0;
+
+        char *p1 = '\0';
+        *p1++;
+        gchar *tmp1;
+        gchar *tmp_state = g_strdup_printf("_NET_WM_STATE_%s", tmp1 = g_ascii_strup(p1, -1));
+        printf("State 1: %s\n", tmp_state);
+        state = XInternAtom(disp, tmp_state, False);
+        g_free(tmp1);
+        g_free(tmp_state);
 
         /* TODO: Fix this
          * Change `0` to the proper window state's maximized or minimized
